@@ -45,8 +45,8 @@ checksum:
 
 release:
   github:
-    owner: knet-dev
-    name: knet
+    owner: themark007
+    name: knew
   draft: false
   prerelease: auto
   name_template: "knet v{{.Version}}"
@@ -59,13 +59,7 @@ release:
 
     **Shell (Linux/macOS):**
     ```bash
-    curl -fsSL https://raw.githubusercontent.com/knet-dev/knet/main/scripts/install.sh | bash
-    ```
-
-    **Homebrew (macOS/Linux):**
-    ```bash
-    brew tap knet-dev/knet
-    brew install knet
+    curl -fsSL https://raw.githubusercontent.com/themark007/knew/main/scripts/install.sh | bash
     ```
 
     **Direct download:** see assets below.
@@ -83,7 +77,7 @@ changelog:
 brews:
   - name: knet
     repository:
-      owner: knet-dev
+      owner: themark007
       name: homebrew-knet
     homepage: https://github.com/themark007/knew
     description: "Kubernetes network scanner, topology visualizer, and AI-powered network analyzer"
