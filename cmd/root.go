@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/themark007/knew/internal/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/themark007/knew/internal/config"
 )
 
 // Global flag values shared by all subcommands.

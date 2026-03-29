@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/cobra"
 	"github.com/themark007/knew/internal/k8s"
 	"github.com/themark007/knew/internal/output"
-	"github.com/spf13/cobra"
 )
 
 var podsCmd = &cobra.Command{

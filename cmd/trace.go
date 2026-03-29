@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/themark007/knew/internal/k8s"
 	"github.com/spf13/cobra"
+	"github.com/themark007/knew/internal/k8s"
 )
 
 var (
