@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/cobra"
 	"github.com/themark007/knew/internal/ai"
 	"github.com/themark007/knew/internal/config"
 	"github.com/themark007/knew/internal/k8s"
-	"github.com/spf13/cobra"
 )
 
 var (

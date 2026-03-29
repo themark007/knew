@@ -64,7 +64,7 @@ func RenderHTML(w io.Writer, data ReportData) error {
 			return strings.Join(parts, ", ")
 		},
 		"joinStrings": strings.Join,
-		"add": func(a, b int) int { return a + b },
+		"add":         func(a, b int) int { return a + b },
 	}).Parse(htmlTemplate)
 	if err != nil {
 		return err

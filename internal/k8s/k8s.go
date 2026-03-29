@@ -406,9 +406,7 @@ func buildEndpointMap(slices []discoveryv1.EndpointSlice) map[string]endpointEnt
 		key := slice.Namespace + "/" + svcName
 		entry := m[key]
 		for _, ep := range slice.Endpoints {
-			for _, addr := range ep.Addresses {
-				entry.IPs = append(entry.IPs, addr)
-			}
+			entry.IPs = append(entry.IPs, ep.Addresses...)
 		}
 		m[key] = entry
 	}

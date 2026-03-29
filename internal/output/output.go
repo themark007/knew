@@ -17,14 +17,14 @@ import (
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 var (
-	headerStyle  = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#7C3AED"))
-	okStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("#22C55E"))
-	warnStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#F59E0B"))
-	dangerStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("#EF4444"))
-	dimStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#6B7280"))
-	podColor     = lipgloss.NewStyle().Foreground(lipgloss.Color("#4FC3F7"))
-	svcColor     = lipgloss.NewStyle().Foreground(lipgloss.Color("#81C784"))
-	ingColor     = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFB74D"))
+	headerStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#7C3AED"))
+	okStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#22C55E"))
+	warnStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#F59E0B"))
+	dangerStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#EF4444"))
+	dimStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#6B7280"))
+	podColor    = lipgloss.NewStyle().Foreground(lipgloss.Color("#4FC3F7"))
+	svcColor    = lipgloss.NewStyle().Foreground(lipgloss.Color("#81C784"))
+	ingColor    = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFB74D"))
 )
 
 // ─── Table renderer ───────────────────────────────────────────────────────────
