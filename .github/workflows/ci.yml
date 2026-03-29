@@ -44,6 +44,13 @@ jobs:
       - name: Vet
         run: go vet ./...
 
+      - name: Check formatting
+        run: |
+          unformatted=$(find . -name '*.go' -not -path './vendor/*' | xargs gofmt -l)
+          if [ -n "$unformatted" ]; then
+            echo "Unformatted files:"; echo "$unformatted"; exit 1
+          fi
+
       - name: Test
         run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
 

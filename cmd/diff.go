@@ -7,14 +7,14 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/spf13/cobra"
 	"github.com/themark007/knew/internal/config"
 	"github.com/themark007/knew/internal/k8s"
 	"github.com/themark007/knew/internal/output"
-	"github.com/spf13/cobra"
 )
 
 var (
-	diffSnapshotName   string
+	diffSnapshotName     string
 	diffSaveSnapshotName string
 )
 
@@ -171,13 +171,13 @@ func runDiff(cmd *cobra.Command, args []string) error {
 
 // TopoDiff holds the changes between two topology snapshots.
 type TopoDiff struct {
-	AddedPods      []string `json:"added_pods"`
-	RemovedPods    []string `json:"removed_pods"`
-	AddedServices  []string `json:"added_services"`
-	RemovedServices []string `json:"removed_services"`
-	AddedPolicies  []string `json:"added_policies"`
-	RemovedPolicies []string `json:"removed_policies"`
-	AddedIngresses []string `json:"added_ingresses"`
+	AddedPods        []string `json:"added_pods"`
+	RemovedPods      []string `json:"removed_pods"`
+	AddedServices    []string `json:"added_services"`
+	RemovedServices  []string `json:"removed_services"`
+	AddedPolicies    []string `json:"added_policies"`
+	RemovedPolicies  []string `json:"removed_policies"`
+	AddedIngresses   []string `json:"added_ingresses"`
 	RemovedIngresses []string `json:"removed_ingresses"`
 }
 
