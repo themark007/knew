@@ -1,0 +1,95 @@
+version: 2
+
+project_name: knet
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w -X github.com/themark007/knew/cmd.Version={{.Version}}
+    binary: knet
+    main: .
+
+archives:
+  - id: default
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "arm64" }}arm64
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+      - scripts/install.sh
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  github:
+    owner: knet-dev
+    name: knet
+  draft: false
+  prerelease: auto
+  name_template: "knet v{{.Version}}"
+  header: |
+    ## knet v{{.Version}}
+
+    Kubernetes network scanner and analyzer.
+
+    ### Installation
+
+    **Shell (Linux/macOS):**
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/knet-dev/knet/main/scripts/install.sh | bash
+    ```
+
+    **Homebrew (macOS/Linux):**
+    ```bash
+    brew tap knet-dev/knet
+    brew install knet
+    ```
+
+    **Direct download:** see assets below.
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - Merge pull request
+      - Merge branch
+
+brews:
+  - name: knet
+    repository:
+      owner: knet-dev
+      name: homebrew-knet
+    homepage: https://github.com/themark007/knew
+    description: "Kubernetes network scanner, topology visualizer, and AI-powered network analyzer"
+    license: MIT
+    skip_upload: auto
+    test: |
+      system "#{bin}/knet", "version"
+    install: |
+      bin.install "knet"

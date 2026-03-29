@@ -1,0 +1,30 @@
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gofmt
+    - goimports
+    - misspell
+    - unconvert
+    - unparam
+
+linters-settings:
+  goimports:
+    local-prefixes: github.com/themark007/knew
+
+issues:
+  exclude-rules:
+    # Allow fmt.Println in cmd layer (CLI output is intentional)
+    - path: cmd/
+      linters: [forbidigo]
+    # Allow long lines in template strings
+    - path: internal/output/html.go
+      linters: [lll]
+
+run:
+  timeout: 5m
+  tests: true

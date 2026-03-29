@@ -1,0 +1,41 @@
+# Binaries
+knet
+knet.exe
+dist/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V7
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Go build cache
+*.test
+*.prof
+*.out
+coverage.html
+coverage.txt
+
+# Editor dirs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Config with secrets
+*.env
+.env
+.env.*
+!.env.example
+
+# Snapshot files (user-specific)
+snapshots/
+
+# Release artifacts
+*.tar.gz
+*.zip
+checksums.txt
