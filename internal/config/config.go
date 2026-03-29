@@ -1,7 +1,8 @@
 // Package config manages knet's configuration via Viper.
 // Config file path: ~/.config/knet/config.yaml
 // AI keys also accepted from environment variables:
-//   OPENAI_API_KEY, ANTHROPIC_API_KEY, OPENROUTER_API_KEY, KNET_AI_KEY
+//
+//	OPENAI_API_KEY, ANTHROPIC_API_KEY, OPENROUTER_API_KEY, KNET_AI_KEY
 package config
 
 import (

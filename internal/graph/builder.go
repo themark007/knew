@@ -22,10 +22,10 @@ const (
 type EdgeType string
 
 const (
-	EdgeEndpoint     EdgeType = "endpoint"     // service → pod via endpoints
-	EdgeSelector     EdgeType = "selector"     // service → pod via label selector
+	EdgeEndpoint     EdgeType = "endpoint"      // service → pod via endpoints
+	EdgeSelector     EdgeType = "selector"      // service → pod via label selector
 	EdgeIngressRoute EdgeType = "ingress-route" // ingress → service
-	EdgePolicyAllow  EdgeType = "policy-allow" // allowed by NetworkPolicy
+	EdgePolicyAllow  EdgeType = "policy-allow"  // allowed by NetworkPolicy
 )
 
 // Node is a vertex in the network graph.

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
+	discoveryv1 "k8s.io/api/discovery/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -20,16 +21,16 @@ import (
 
 // PodInfo holds discovered pod metadata.
 type PodInfo struct {
-	Name        string
-	Namespace   string
-	IP          string
-	NodeName    string
-	Labels      map[string]string
-	Ports       []PortInfo
-	Phase       string
-	Ready       bool
-	Conditions  []string
-	CreatedAt   time.Time
+	Name       string
+	Namespace  string
+	IP         string
+	NodeName   string
+	Labels     map[string]string
+	Ports      []PortInfo
+	Phase      string
+	Ready      bool
+	Conditions []string
+	CreatedAt  time.Time
 }
 
 // PortInfo describes a container port.
@@ -75,13 +76,13 @@ type NetworkPolicyRule struct {
 
 // NetworkPolicyInfo holds a parsed NetworkPolicy.
 type NetworkPolicyInfo struct {
-	Name          string
-	Namespace     string
-	PodSelector   map[string]string
-	PolicyTypes   []string // "Ingress", "Egress"
-	IngressRules  []NetworkPolicyRule
-	EgressRules   []NetworkPolicyRule
-	SelectsAll    bool // podSelector: {} — applies to all pods in namespace
+	Name         string
+	Namespace    string
+	PodSelector  map[string]string
+	PolicyTypes  []string // "Ingress", "Egress"
+	IngressRules []NetworkPolicyRule
+	EgressRules  []NetworkPolicyRule
+	SelectsAll   bool // podSelector: {} — applies to all pods in namespace
 }
 
 // IngressRule describes a single path rule inside an Ingress.
@@ -147,11 +148,11 @@ func NewClient(kubeconfigPath, kubeContext string) (*kubernetes.Clientset, strin
 
 // BuildOptions controls what the topology scan includes.
 type BuildOptions struct {
-	Clientset     *kubernetes.Clientset
-	Namespace     string
-	AllNamespaces bool
-	LabelSelector string
-	Timeout       int
+	Clientset       *kubernetes.Clientset
+	Namespace       string
+	AllNamespaces   bool
+	LabelSelector   string
+	Timeout         int
 	IncludePolicies bool
 	IncludeIngress  bool
 }
@@ -190,9 +191,9 @@ func BuildTopology(opts BuildOptions) (*Topology, error) {
 	}
 
 	// Endpoints for service→pod mapping
-	epList, err := opts.Clientset.CoreV1().Endpoints(ns).List(ctx, metav1.ListOptions{})
+	epList, err := opts.Clientset.DiscoveryV1().EndpointSlices(ns).List(ctx, metav1.ListOptions{})
 	if err != nil {
-		return nil, fmt.Errorf("listing endpoints: %w", err)
+		return nil, fmt.Errorf("listing endpoint slices: %w", err)
 	}
 	epMap := buildEndpointMap(epList.Items)
 
@@ -375,8 +376,8 @@ func ingressFromK8s(ing networkingv1.Ingress) IngressInfo {
 		}
 		for _, path := range r.HTTP.Paths {
 			ir := IngressRule{
-				Host:    r.Host,
-				Path:    path.Path,
+				Host:     r.Host,
+				Path:     path.Path,
 				PathType: string(*path.PathType),
 			}
 			if path.Backend.Service != nil {
@@ -395,17 +396,21 @@ type endpointEntry struct {
 	IPs []string
 }
 
-func buildEndpointMap(eps []corev1.Endpoints) map[string]endpointEntry {
+func buildEndpointMap(slices []discoveryv1.EndpointSlice) map[string]endpointEntry {
 	m := make(map[string]endpointEntry)
-	for _, ep := range eps {
-		key := ep.Namespace + "/" + ep.Name
-		var ips []string
-		for _, sub := range ep.Subsets {
-			for _, addr := range sub.Addresses {
-				ips = append(ips, addr.IP)
+	for _, slice := range slices {
+		svcName := slice.Labels["kubernetes.io/service-name"]
+		if svcName == "" {
+			continue
+		}
+		key := slice.Namespace + "/" + svcName
+		entry := m[key]
+		for _, ep := range slice.Endpoints {
+			for _, addr := range ep.Addresses {
+				entry.IPs = append(entry.IPs, addr)
 			}
 		}
-		m[key] = endpointEntry{IPs: ips}
+		m[key] = entry
 	}
 	return m
 }
@@ -531,12 +536,12 @@ func CheckConnectivity(topo *Topology, srcRef, dstRef string, port int32) Connec
 
 // NamespaceAudit summarises the isolation level of a namespace.
 type NamespaceAudit struct {
-	Namespace      string
-	PolicyCount    int
-	HasIngress     bool
-	HasEgress      bool
-	ExposedPods    []string // pods not selected by any policy
-	CoverageLevel  string   // "none", "partial", "full"
+	Namespace     string
+	PolicyCount   int
+	HasIngress    bool
+	HasEgress     bool
+	ExposedPods   []string // pods not selected by any policy
+	CoverageLevel string   // "none", "partial", "full"
 }
 
 // AuditNamespaces returns isolation audits for each namespace in the topology.
